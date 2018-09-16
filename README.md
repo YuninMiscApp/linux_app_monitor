@@ -1,2 +1,2 @@
-# linux_app_monitor
-Linux应用程序监控.
+# system_monitor 
+Linux系统资源监测小程序.
