@@ -7,33 +7,21 @@
 #include <ctype.h>
 #include <pthread.h>
 
+#include "cmd.h"
+
 #define CK_TIME 5   
 
 
 void* task_strace(void* arg)
 {
-	FILE *fp = NULL;
-	char cmd[1024] = {0,};
-	char buf2[1024*4] = {0,};
 	char task_info[1024] = {0,};
-	char *pResult = NULL;
-
     int pid = (int)arg;
 	printf("%s,%d: pid: %d\n",__func__,__LINE__,pid);
 	//
-	
+	CMD_GET_BUF(task_info,"cat /proc/%d/stat | awk '{print $1, $2}' ",pid);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s ",task_info);
 	//
-	memset(cmd,0,sizeof(cmd));
-	snprintf(cmd,sizeof(cmd),"sudo strace -c -p %d ",pid);
-	printf("%s,%d: cmd: %s\n",__func__,__LINE__,cmd);
-	fp = popen (cmd, "r");
-	assert(fp);
-	memset(buf2,0,sizeof(buf2));
-	pResult = fgets (buf2, sizeof (buf2), fp);
-	// assert(pResult);
-	fclose(fp);
-	fp = NULL;
-	// printf("%s,%d: buf2: %s\n",__func__,__LINE__,buf2);
+	CMD_EXEC("sudo strace -c -p %d ",pid);
     return NULL;
 }
 
