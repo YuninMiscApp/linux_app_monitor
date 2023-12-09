@@ -16,7 +16,7 @@ void* task_strace(void* arg)
 {
 	char task_info[1024] = {0,};
     int pid = (int)arg;
-	printf("%s,%d: pid: %d\n",__func__,__LINE__,pid);
+	// printf("%s,%d: pid: %d\n",__func__,__LINE__,pid);
 	//
 	CMD_GET_BUF(task_info,"cat /proc/%d/stat | awk '{print $1, $2}' ",pid);
 	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s ",task_info);
@@ -27,13 +27,9 @@ void* task_strace(void* arg)
 
 int main(int argc ,char *argv[])  
 {
-    FILE *fp = NULL;
-    char buf[1024*4] = {0,};
-    char buf2[1024*4] = {0,};
-    char *pResult = NULL;
+	char buf[10240]={0};
     int pid = -1;
 	int seconds = CK_TIME;
-    char cmd[1024] = {0,};
     int ret = -1;
     if (argc < 3)
     {
@@ -52,16 +48,7 @@ int main(int argc ,char *argv[])
 		system("clear");
 		printf("=======================================================================================================\n");
 		//
-		memset(cmd,0,sizeof(cmd));
-	    snprintf(cmd,sizeof(cmd),"ls /proc/%d/task/ | xargs",pid);
-	    fp = popen (cmd, "r");
-	    assert(fp);
-		memset(buf,0,sizeof(buf));
-		pResult = fgets (buf, sizeof (buf), fp);
-	    assert(pResult);
-	    fclose(fp);
-	    fp = NULL;
-		// printf("%s,%d: buf: %s\n",__func__,__LINE__,buf);
+		CMD_GET_BUF(buf,"ls /proc/%d/task/ | xargs",pid);
 
 		char *sub = NULL;
 		int i = 0;
