@@ -4,7 +4,7 @@ PHONY : all
 
 TARGET_NAME ?= system_monitor
 
-CROSS_COMPILE ?= arm-hisiv400-linux-
+CROSS_COMPILE ?= 
 
 AS	= $(CROSS_COMPILE)as
 LD	= $(CROSS_COMPILE)ld
@@ -28,7 +28,7 @@ export AS LD CC CPP AR NM STRIP OBJCOPY OBJDUMP RANLIB CFLAGS LDFLAGS
 
 TEST_CFLAGS ?= ${CFLAGS}
 LINK_PATH := -L libs
-LD_LIBS := 
+LD_LIBS := -lpthread
 
 export TEST_CFLAGS LINK_PATH LD_LIBS
 
@@ -52,6 +52,8 @@ clean:	FORCE
 	do rm -f $${dir}/*.o $${dir}/*.bak $${dir}/*.so $${dir}/*.a $${dir}/*.dep;done}
 	@rm -fr bin/
 	@${shell cd init && for i in `find *.c`;do rm -f `echo $$i|sed 's/\.c//g' `;done }
+
+distclean: clean FORCE
 
 help: 
 	@echo  'Cleaning targets:'
