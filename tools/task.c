@@ -6,6 +6,8 @@
 #include <assert.h>   
 #include <ctype.h>
  
+ #include "cmd.h"
+ 
 #define CK_TIME 1   
 
 #define LINUX_KERNEL_TASK_STAT	"%d %s %c %d %d %d %d %d %u %lu "\
@@ -162,15 +164,7 @@ int main(int argc ,char *argv[])
 		);
 		printf("=======================================================================================================\n");
 		//
-		memset(cmd,0,sizeof(cmd));
-	    snprintf(cmd,sizeof(cmd),"ls /proc/%d/task/ | xargs",pid);
-	    fp = popen (cmd, "r");
-	    assert(fp);
-		memset(buf,0,sizeof(buf));
-		pResult = fgets (buf, sizeof (buf), fp);
-	    assert(pResult);
-	    fclose(fp);
-	    fp = NULL;
+		CMD_GET_BUF(buf,"ls /proc/%d/task/ | xargs",pid);
 		//printf("%s,%d: buf: %s\n",__func__,__LINE__,buf);
 
 		char *sub = NULL;
@@ -189,16 +183,7 @@ int main(int argc ,char *argv[])
 				i++;
 			}
 			//
-			memset(cmd,0,sizeof(cmd));
-		    snprintf(cmd,sizeof(cmd),"cat /proc/%d/task/%s/stat",pid,sub);
-	//		printf("%s,%d: cmd: %s\n",__func__,__LINE__,cmd);
-		    fp = popen (cmd, "r");
-		    assert(fp);
-			memset(buf2,0,sizeof(buf2));
-			pResult = fgets (buf2, sizeof (buf2), fp);
-		    assert(pResult);
-		    fclose(fp);
-		    fp = NULL;
+			CMD_GET_BUF(buf2,"cat /proc/%d/task/%s/stat",pid,sub);
 	//		printf("%s,%d: buf2: %s\n",__func__,__LINE__,buf2);
 			//
 			task_stat_parse(buf2);
