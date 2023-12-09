@@ -36,7 +36,7 @@ MAKEFILE_BUILD := Makefile.build
 MAKEFILE_TEST_BUILD := Makefile.test.build
 export MAKEFILE_BUILD MAKEFILE_TEST_BUILD
 
-dirs := init/
+dirs := tools/
 dirs := ${patsubst %/,%,$(filter %/, $(dirs))}
 PHONY += $(dirs)
 $(dirs): FORCE
@@ -51,7 +51,7 @@ clean:	FORCE
 	@${shell for dir in `find -maxdepth 3 -type d | grep -v git| grep -v include | grep -v \.si4project`;\
 	do rm -f $${dir}/*.o $${dir}/*.bak $${dir}/*.so $${dir}/*.a $${dir}/*.dep;done}
 	@rm -fr bin/
-	@${shell cd init && for i in `find *.c`;do rm -f `echo $$i|sed 's/\.c//g' `;done }
+	@${shell cd tools && for i in `find *.c`;do rm -f `echo $$i|sed 's/\.c//g' `;done }
 
 distclean: clean FORCE
 
