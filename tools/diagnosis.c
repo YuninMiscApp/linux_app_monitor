@@ -70,6 +70,8 @@ int main(int argc ,char *argv[])
 			pthread_create(&mythread, NULL, task_strace, (void *)atoi(sub));
 			sleep(seconds);
 			system("sudo kill -s 15 `ps -ef  | grep strace | grep -v grep | cut -c 9-16 | xargs `");
+			sleep(1);
+			printf("=======================================================================================================\n");
 			//
 			sub = strtok(NULL, " ");
 		}	
