@@ -32,16 +32,19 @@ int main(int argc ,char *argv[])
     char buf2[1024*4] = {0,};
     char *pResult = NULL;
     int pid = -1;
+	int seconds = CK_TIME;
     char cmd[1024] = {0,};
     int ret = -1;
-    if (argc < 2)
+    if (argc < 3)
     {
-        fprintf(stderr, "Usage: %s <PID>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <PID> <seconds>\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 	ret = sscanf(argv[1],"%d",&pid);
 	assert(1 == ret);
-	printf("pid: %d\n",pid);
+	ret = sscanf(argv[2],"%d",&seconds);
+	assert(1 == ret);
+	printf("pid=%d, seconds=%d\n",pid,seconds);
 	//
 	//while(1)
 	{
@@ -78,7 +81,7 @@ int main(int argc ,char *argv[])
 			//
 			pthread_t mythread;
 			pthread_create(&mythread, NULL, task_strace, (void *)atoi(sub));
-			sleep(CK_TIME);
+			sleep(seconds);
 			system("sudo kill -s 15 `ps -ef  | grep strace | grep -v grep | cut -c 9-16 | xargs `");
 			//
 			sub = strtok(NULL, " ");
