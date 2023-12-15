@@ -21,6 +21,22 @@ extern "C"
 } while(0)
 
 
+#define CMD_PRINT(args...) do { \
+    char _cmd_[1024*4] = {0,}; \
+    char _buf_[1024*16] = {0,}; \
+    FILE *_fp_ = NULL; \
+    char *_result_ = NULL; \
+    memset(_cmd_,0,sizeof(_cmd_));\
+    snprintf(_cmd_,sizeof(_cmd_),args); \
+    _fp_ = popen (_cmd_, "r"); \
+    assert(_fp_);\
+    memset(_buf_,0,sizeof(_buf_));\
+    while ((_result_ = fgets(_buf_, sizeof (_buf_), _fp_)) != NULL) \
+        printf("%s",_buf_);\
+    fclose(_fp_);\
+    _fp_ = NULL;\
+} while(0)
+
 #define CMD_GET_BUF(dst_buf,args...) do { \
     char _cmd_[1024*4] = {0,}; \
     FILE *_fp_ = NULL; \

@@ -19,8 +19,10 @@ void* task_strace(void* arg)
 	// printf("%s,%d: pid: %d\n",__func__,__LINE__,pid);
 	//
 	CMD_GET_BUF(task_info,"cat /proc/%d/stat | awk '{print $1, $2}' ",pid);
-	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n",task_info);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s ",task_info);
 	//
+	CMD_PRINT("sudo gdb -q --batch --ex \"set height 0\" -ex \"thread apply all bt\" -p %d | grep '#' 2>&1 ",pid);
+	printf("--------------+++++++++++++--------------+++++++++++++\n");
 	CMD_EXEC("sudo strace -c -p %d ",pid);
     return NULL;
 }
