@@ -19,7 +19,7 @@ void* task_strace(void* arg)
 	// printf("%s,%d: pid: %d\n",__func__,__LINE__,pid);
 	//
 	CMD_GET_BUF(task_info,"cat /proc/%d/stat | awk '{print $1, $2}' ",pid);
-	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s ",task_info);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n",task_info);
 	//
 	CMD_EXEC("sudo strace -c -p %d ",pid);
     return NULL;
